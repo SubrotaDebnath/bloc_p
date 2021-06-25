@@ -7,7 +7,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,23 +19,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   final _counterBlock = CounterBlock();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -69,48 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        _counterBlock.eventSink.add(CounterAction.increment);
-                      },
-                      icon: Icon(Icons.add),
-                      color: Colors.deepOrange,
-                      autofocus: true,
-                      tooltip: 'Increment',
-                      splashColor: Colors.amber,
-                      iconSize: 40,
-                      alignment: Alignment.center,
-                      highlightColor: Colors.deepPurple,
-                      splashRadius: 30,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _counterBlock.eventSink.add(CounterAction.decrement);
-                      },
-                      icon: Icon(Icons.remove),
-                      color: Colors.deepOrange,
-                      autofocus: true,
-                      tooltip: 'Increment',
-                      splashColor: Colors.amber,
-                      iconSize: 40,
-                      alignment: Alignment.center,
-                      highlightColor: Colors.deepPurple,
-                      splashRadius: 30,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _counterBlock.eventSink.add(CounterAction.reset);
-                      },
-                      icon: Icon(Icons.loop),
-                      color: Colors.deepOrange,
-                      autofocus: true,
-                      tooltip: 'Increment',
-                      splashColor: Colors.amber,
-                      iconSize: 40,
-                      alignment: Alignment.center,
-                      highlightColor: Colors.deepPurple,
-                      splashRadius: 30,
-                    ),
+                    CounterButton(_counterBlock, 'Increment', Icons.add, CounterAction.increment),
+                    CounterButton(_counterBlock, 'Decrement', Icons.remove, CounterAction.decrement),
+                    CounterButton(_counterBlock, 'Reset', Icons.loop, CounterAction.reset),
                   ],
                 ),
               ),
@@ -118,6 +73,33 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CounterButton extends StatelessWidget {
+  final CounterBlock _counterBlock;
+  final String tooltip;
+  final IconData iconData;
+  final CounterAction counterAction;
+
+  CounterButton(this._counterBlock, this.tooltip, this.iconData, this.counterAction);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        _counterBlock.eventSink.add(counterAction);
+      },
+      icon: Icon(iconData),
+      color: Colors.deepOrange,
+      autofocus: true,
+      tooltip: tooltip,
+      splashColor: Colors.amber,
+      iconSize: 40,
+      alignment: Alignment.center,
+      highlightColor: Colors.deepPurple,
+      splashRadius: 30,
     );
   }
 }
