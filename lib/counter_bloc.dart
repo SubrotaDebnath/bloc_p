@@ -30,5 +30,10 @@ class CounterBlock {
     });
   }
 
+  void dispose(){
+    _stateStreamController.close();
+    _eventStreamController.close();
+  }
+
 
 }
